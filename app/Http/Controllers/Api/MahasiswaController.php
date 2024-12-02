@@ -35,17 +35,22 @@ class MahasiswaController extends Controller
             'prodi' => $request->prodi,
         ]);
         return response()->json([
-            'messsage' => 'Dosen Berhasil Dibuat',
+            'messsage' => 'Mahasiswa Berhasil Dibuat',
             'data' => $mahasiswa,
         ], 201);
     }
     public function update(Request $request, $id)
     {
+        $validator = $request->validate([
+            'nama' => 'required|string|max:255',
+            'nim' => 'required|string|unique:mahasiswas,nim,' . $id,
+            'prodi' => 'required|string',
+        ]);
         $mahasiswa = Mahasiswa::findOrFail($id);
-        $mahasiswa->update($request->all());
+        $mahasiswa->update($validator);
 
         return response()->json([
-            'message' => 'Data Berhasil di ambil',
+            'message' => 'Data Berhasil di update',
             'data' => $mahasiswa
         ], 200);
 

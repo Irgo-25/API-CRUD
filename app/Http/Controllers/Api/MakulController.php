@@ -33,17 +33,21 @@ class MakulController extends Controller
             'sks' => $request->sks,
         ]);
         return response()->json([
-            'messsage' => 'Dosen Berhasil Dibuat',
+            'messsage' => 'Makul Berhasil Dibuat',
             'data' => $makul,
         ], 201);
     }
     public function update(Request $request, $id)
     {
         $makul = Makul::findOrFail($id);
-        $makul->update($request->all());
+        $validator = $request->validate([
+            'nama' => 'required|string|max:100',
+            'sks' => 'required|integer|max:20|',
+        ]);
+        $makul->update($validator);
 
         return response()->json([
-            'message' => 'Data Berhasil di ambil',
+            'message' => 'Data Berhasil di update',
             'data' => $makul
         ], 200);
 

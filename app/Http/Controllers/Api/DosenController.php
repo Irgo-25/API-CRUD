@@ -43,41 +43,18 @@ class DosenController extends Controller
         ], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
-
+        $validator = $request->validate([
+            'nama' => 'required|string|max:100',
+            'nip' => 'required|string|max:20|unique:dosens,nip,' . $id,
+            'fakultas' => 'required|string|max:100',
+        ]);
         $dosens = Dosen::findOrFail($id);
-        $dosens->update($request->all());
+        $dosens->update($validator);
 
         return response()->json([
-            'message' => 'Data Berhasil di ambil',
+            'message' => 'Data Berhasil di update',
             'data' => $dosens
         ], 200);
 
